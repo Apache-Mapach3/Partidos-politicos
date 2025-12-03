@@ -6,7 +6,7 @@ package com.udc.politica;
 
 /**
  *
- * @author Admin
+ * @author Jarry
  */
 import com.udc.politica.model.PartidoPolitico;
 import com.udc.politica.repository.PartidoPoliticoRepository;
