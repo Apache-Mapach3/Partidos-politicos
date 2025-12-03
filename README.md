@@ -1,161 +1,210 @@
-API REST - Gestión de Partidos Políticos 🏛️
+**API REST** - Gestión de Partidos Políticos 🏛️
+API REST desarrollada con Spring Boot para la gestión de partidos políticos, aplicando principios SOLID, Clean Code y buenas prácticas de arquitectura de software.
+Características
 
-API REST desarrollada con Spring Boot para la gestión eficiente de partidos políticos. Este proyecto sirve como caso de estudio para la aplicación de principios SOLID, Clean Code, arquitectura hexagonal simplificada y DevOps básico.
+- [x] CRUD completo de Partidos Políticos
+- [x]  Validaciones robustas con Bean Validation
+- [x] Manejo centralizado de excepciones
+- [x] DTOs para separación de capas
+- [x] Logging estructurado
+- [x] Documentación completa
+- [x] Tests unitarios y de integración
+- [x] Dockerizado con Docker Compose
+- [x] Base de datos PostgreSQL
 
-🚀 Características Principales
+> [!NOTE]
+> **Requisitos Previos**
+> - Java 17 o superior
+> - Maven 3.6+
+> - Docker y Docker Compose
+> - PostgreSQL 15 (si no usas Docker)
+> - Postman (para pruebas)
 
-✅ CRUD completo de Partidos Políticos.
-
-✅ Base de Datos Dual: H2 (Memoria) para desarrollo rápido y PostgreSQL para producción/Docker.
-
-✅ Validaciones robustas con Bean Validation (@Valid).
-
-✅ Manejo centralizado de excepciones (@ControllerAdvice).
-
-✅ DTOs para desacoplamiento y seguridad de datos.
-
-✅ Logging estructurado con SLF4J.
-
-✅ Tests unitarios y de integración con JUnit 5 y Mockito.
-
-✅ Dockerizado con Docker Compose para despliegue inmediato.
-
-🛠️ Tecnologías Utilizadas
-
-Spring Boot / 3.3.0 / Framework principal backend
-
-Spring Data JPA / 3.3.0 / Capa de persistencia y ORM
-
-PostgreSQL / 15 / Motor de base de datos (Docker)
-
-H2 Database / Latest / Base de datos en memoria (Local/Tests)
-
-Lombok / Latest / Reducción de código boilerplate
-
-JUnit 5 /5.9+ / Framework de Testing
-
-Mockito / 5.3+ / Mocking de dependencias
-
-Docker / Latest / Contenedorización
-
-
-📋 Requisitos Previos
-
-Java 17 o superior.
-
-Maven 3.6+.
-
-Docker y Docker Compose (Opcional, recomendado).
-
-Postman (para pruebas de endpoints).
-
-
-⚡ Inicio Rápido
-
-Opción 1: Con Docker (Recomendado 🐳)
-
-Esta opción levanta la API y una base de datos PostgreSQL real automáticamente.
-
-Clonar el repositorio:
-
-git clone [https://github.com/TU_USUARIO/politica.git](https://github.com/TU_USUARIO/politica.git)
+### Tecnologías Utilizadas
+TecnologíaVersiónPropósitoSpring Boot3.3.0Framework principalSpring Data JPA3.3.0PersistenciaPostgreSQL15Base de datosLombokLatestReducción de código boilerplateJUnit 55.9+TestingMockito5.3+Mocking en testsDockerLatestContenedorización
+### Estructura del Proyecto
+```
+politica/
+├── src/
+│   ├── main/
+│   │   ├── java/com/udc/politica/
+│   │   │   ├── controller/           # Capa de presentación
+│   │   │   ├── service/              # Lógica de negocio
+│   │   │   │   └── impl/
+│   │   │   ├── repository/           # Acceso a datos
+│   │   │   ├── model/                # Entidades JPA
+│   │   │   ├── dto/                  # Data Transfer Objects
+│   │   │   ├── mapper/               # Conversores DTO-Entity
+│   │   │   └── exception/            # Manejo de excepciones
+│   │   └── resources/
+│   │       └── application.properties
+│   └── test/                         # Tests unitarios
+├── Dockerfile
+├── docker-compose.yml
+└── pom.xml
+```
+# Inicio Rápido
+Opción 1: Con Docker (Recomendado)
+## 1. Clonar el repositorio
+git clone <tu-repositorio>
 cd politica
 
-
-Compilar y Levantar servicios:
-
+## 2. Compilar el proyecto
+```
 mvn clean package -DskipTests
+```
+## 3. Levantar los servicios
+```
 docker-compose up --build
+```
+### La API estará disponible en: [Localhost](http://localhost:8080)
+Opción 2: Sin Docker
+bash# 1. Configurar PostgreSQL localmente
+### Crear base de datos: `politicadb`
 
-
-La API estará disponible en: http://localhost:8080
-
-Opción 2: Ejecución Local (Sin Docker)
-
-Esta opción utiliza la base de datos H2 en memoria configurada por defecto, ideal para pruebas rápidas sin instalar nada extra.
-
-Ejecutar directamente con Maven:
-
+## 4. Compilar y ejecutar
+```
+mvn clean install
+```
+```
 mvn spring-boot:run
-
-
-La consola H2 estará disponible en: http://localhost:8080/h2-console
-
-
-Ejemplo de JSON (Body para POST/PUT)
-
+```
+### Endpoints de la API
+Crear Partido Político
+httpPOST `/api/partidos`
+Content-Type: `application/json`
+```json
 {
   "nombre": "Partido Innovación",
   "eslogan": "Futuro Seguro",
   "pais": "Colombia",
   "presidente": "Juan Pérez",
-  "secretario": "Ana Gómez",
-  "tesorero": "Carlos Ruiz",
   "numPresidentes": 0,
   "numGobernadores": 5,
-  "numAlcaldes": 20,
-  "numConcejales": 150,
-  "numCongresistas": 12
+  "numAlcaldes": 20
 }
-
-
-🧪 Ejecución de Tests
-
-El proyecto incluye una suite de pruebas para garantizar la calidad del código.
-
-# Ejecutar todos los tests
+```
+Listar Todos los Partidos
+`httpGET /api/partidos`
+Obtener Partido por ID
+`httpGET /api/partidos/{id}`
+Actualizar Partido
+`httpPUT /api/partidos/{id}`
+Content-Type: application/json
+```json
+{
+  "nombre": "Partido Innovación Actualizado",
+  "eslogan": "Nuevo Eslogan",
+  "pais": "Colombia"
+}
+```
+Eliminar Partido
+`httpDELETE /api/partidos/{id}`
+### Ejecutar Tests
+```
 mvn test
-
-# Generar reporte de cobertura (Jacoco)
+```
+### Tests con reporte de cobertura
+```
 mvn clean test jacoco:report
+```
+### El reporte se genera en: `target/site/jacoco/index.html`
+Principios SOLID Aplicados
+#### 1. Single Responsibility Principle (SRP)
+Cada clase tiene una única responsabilidad
+- Controller → Manejo de peticiones HTTP
+- Service → Lógica de negocio
+- Repository → Acceso a datos
+- Mapper → Conversión entre capas
+#### 2. Open/Closed Principle (OCP)
+Uso de interfaces (PartidoService)
+Extensible sin modificar código existente
+#### 3. Liskov Substitution Principle (LSP)
+Las implementaciones pueden sustituir interfaces sin romper la aplicación
+#### 4. Interface Segregation Principle (ISP)
+Interfaces específicas y cohesivas
+No se obliga a implementar métodos innecesarios
+#### 5. Dependency Inversion Principle (DIP)
+> [!CAUTION]
+> Inyección de dependencias por constructor
+> Dependencia de abstracciones, no de implementaciones concretas
 
+Buenas Prácticas Implementadas
+Arquitectura en Capas
+```mermaid
+graph TD
+    A["Presentación (Controller)"] --> B["Negocio (Service)"]
+    B --> C["Persistencia (Repository)"]
+    C --> D["Base de Datos"]
+```
+### Separación de Responsabilidades
 
-El reporte HTML se genera en: target/site/jacoco/index.html
+DTOs: Exponen solo datos necesarios al cliente
+Entities: Representan el modelo de dominio
+Mappers: Convierten entre DTOs y Entities
 
-🏗️ Arquitectura y Principios SOLID
+### Manejo de Excepciones
 
-Este proyecto se adhiere estrictamente a buenas prácticas de ingeniería de software:
+GlobalExceptionHandler centraliza el manejo de errores
+Respuestas consistentes con códigos HTTP apropiados
+Mensajes de error descriptivos
 
-Single Responsibility Principle (SRP):
+### Validaciones
 
-Controller: Solo maneja peticiones HTTP y mapeo.
+Validaciones declarativas con `@Valid`
+Mensajes personalizados
+Validación en la capa de presentación
 
-Service: Solo contiene lógica de negocio.
+### Logging
 
-Repository: Solo interactúa con la BD.
+Uso de SLF4J con Logback
+Logs en puntos estratégicos
+Niveles apropiados (INFO, ERROR, DEBUG)
 
-Mapper: Solo convierte objetos.
+### Seguridad
 
-Open/Closed Principle (OCP):
+Usuario no-root en Docker
+Variables de entorno para credenciales
+Validación de entrada de datos
+Manejo seguro de excepciones
 
-Uso de interfaces (PartidoService) permitiendo nuevas implementaciones sin modificar el código cliente (Controlador).
+### Monitoreo
+La aplicación incluye Spring Boot Actuator:
+bash# Health check
+```
+GET http://localhost:8080/actuator/health
+```
 
-Dependency Inversion Principle (DIP):
+# Métricas
+```
+GET http://localhost:8080/actuator/metrics
+```
+Solución de Problemas
+Error: "Cannot connect to database"
+bash# Verificar que PostgreSQL esté corriendo
+docker-compose ps
 
-El Controlador depende de la abstracción (PartidoService), no de la implementación concreta (PartidoServiceImpl).
-
-🔧 Solución de Problemas
-
-Error: "Connection refused" (PostgreSQL):
-
-Si usas Docker, asegúrate de correr docker-compose up.
-
-Si corres local sin Docker, la app usará H2 automáticamente para evitar este error.
-
-Error: "Port 8080 already in use":
-
-Cambia el puerto en application.properties: server.port=8081 o mata el proceso que ocupa el puerto.
-
-🤝 Contribuir
-
-Crea una rama (git checkout -b feature/nueva-funcionalidad).
-
-Commit tus cambios (git commit -am 'Agregar nueva funcionalidad').
-
-Push a la rama (git push origin feature/nueva-funcionalidad).
-
-Abre un Pull Request.
-
-📄 Licencia
-
-Este proyecto está bajo la Licencia MIT.
+# Ver logs
+```
+docker-compose logs db
+```
+Error: "Port 8080 already in use"
+bash# Cambiar puerto en application.properties
+server.port=8081
+Tests fallan
+bash# Limpiar y recompilar
+```
+mvn clean install -U
+```
+> [!TIP]
+> ### Documentación Adicional
+> - [Guía de Spring Boot](https://docs.spring.io/spring-boot/documentation.html)
+> - [JPA Documentation](https://www.ibm.com/docs/es/was-liberty/nd)
+> - [Docker Best Practices](https://docs.docker.com/build/building/best-practices/)
+### Contribuir
+Fork el proyecto
+- Crea una rama (`git checkout -b feature/nueva-funcionalidad`)
+- Commit tus cambios (`git commit -am 'Agregar nueva funcionalidad'`)
+- Push a la rama (`git push origin feature/nueva-funcionalidad`)
+- Abre un Pull Request
+> *Este proyecto está bajo la Licencia MIT.*
